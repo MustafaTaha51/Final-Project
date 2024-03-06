@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block body %}
+    <form class="regentries" action="/register" method="post">
+        <h5>Register!</h5>
+        <div>
+            <input autocomplete="off" autofocus name="username" placeholder="Username" type="text" value="{{ username }}">
+        </div>
+        <div>
+            <input name="password" placeholder="Password" type="password">
+        </div>
+        <div>
+            <input name="confirmation" placeholder="Password (again)" type="password">
+        </div>
+        <button id="btn" class="btn btn-danger" type="submit">Register</button>
+    </form>
+    {% if error %}
+        <div class="alert alert-danger" id="logregalert" role="alert">{{ error }}</div>
+    {% endif %}
+{% endblock %}

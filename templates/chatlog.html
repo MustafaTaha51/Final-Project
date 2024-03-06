@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Chatlog
+{% endblock %}
+
+{% block body %}
+    <div class="message-box">
+        <div class="messages" id="messages">
+            {% for msg in logs %}
+                <div class="text">
+                    <span>
+                        <strong>{{ msg[0] }}</strong>: {{ msg[1] }}    
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

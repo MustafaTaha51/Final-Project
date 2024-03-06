@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Chatlogs
+{% endblock %}
+
+{% block body %}
+    <h5>View Your Chat History!</h5>
+    <p></p>
+    <div class="chatlog-box">
+        <div class="chatlogs">
+            {% for row in idTimeList %}
+                <div class="chatlogContainer">
+                    <form class="logview" action="/chatlog_view" method="post">
+                        <button type="submit" name="logview" value="{{ row['chat_id'] }}" class="chatlog">{{ row["time"] }}</button>
+                    </form>
+                    <form class="delete" action="/delete" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm" name="delete" value="{{ row['chat_id'] }}">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div> 
+    </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+    <form method="post" class="entries">
+        <h5>Join a Room!</h5>
+        <!-- Reasoning for passing in name and code previously typed again to avoid users losing input if they make a mistake -->
+        <div>
+            <label>Name:</label>
+            <input autofocus type="text" placeholder="Enter Name" name="name" value="{{ name }}">
+        </div>
+        <div class="join">
+            <input type="text" placeholder="Room Code" name="code" value="{{ code }}"/>
+            <button type="submit" name="join">Join a Room</button>
+        </div>
+        <label class="codetip">&#40;Leave 'Room Code' empty for random code&#41;</label>
+        <button type="submit" name="create" class="create-btn">Create a Room</button>
+    </form>
+    {% if not logusername %}
+        <div class="logreg">
+            <form action="/login" class="login">
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </form>
+            <form action="/register" class="register">
+                <button type="submit" class="btn btn-danger">Register</button>
+            </form>
+        </div>
+        <p class="regtip">&#40;Log in to save your chats&#41;</p>
+    {% else %}
+        <div class="chatlogout">
+            <form action="/chatlogs" class="logout">
+                <button type="submit" class="btn btn-primary">Chat History</button>
+            </form>
+            <form action="/logout" class="logout">
+                <button type="submit" class="btn btn-danger">Log Out</button>
+            </form>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
+    <form class="contactForm" action="/send_email" method="POST" onSubmit="sendFeedback()">
+        <h5>Send Me Feedback!</h5>
+        <div class="container">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+        </div>
+        <div class="messageBox">
+            <label for="message">Message:</label><br>
+            <textarea name="message" rows="4" required></textarea><br>
+        </div>
+        <button type="submit" value="Submit">Submit</button>
+        <label id="sendConfirm" for="submit">Message will be sent shortly ...</label>
+    </form>
+
+    <script>
+        // Runs when feedback form is submitted (displays send confirmation)
+        const sendFeedback = () => {
+            var sendConfirm = document.getElementById("sendConfirm");
+            sendConfirm.style.display = "inline";
+        }
+    </script>
+{% endblock %}

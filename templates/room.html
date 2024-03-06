@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Room
+{% endblock %}
+
+{% block body %}
+    <div class="message-box">
+        <h5>Hi {{ name }}, your room code is: {{ code }}</h5>
+        <div class="messages" id="messages"></div>
+        <form>
+            <div class="input">
+                <input autofocus type="text" rows="3" placeholder="Message" name="message" id="message"/>
+                <!-- Justification for 'return false': This prevents ususl form behaviour of refreshing page when a form is submitted.
+                Returning false stops the submission process from completing, therefore preventing the page from refreshing. -->
+                <button type="submit" name="send" id="send-btn" onClick="sendMessage(); return false;">Send</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        var socketio = io();
+        
+        // Get message content from input field
+        const messages = document.getElementById("messages");
+
+        // Creates message HTML content to insert into div with "messages" id
+        const createMessage = (name, msg) => {
+            const content = `
+            <div class="text">
+                <span>
+                    <strong>${name}</strong>: ${msg}    
+                </span>
+            </div>
+            `;
+            messages.innerHTML += content;
+        };
+
+        // Function that only runs when "message" event is detected from the server
+        socketio.on("message", (data) => {
+            createMessage(data.name, data.message);
+        });
+
+        // Runs when message is sent (send button is clicked)
+        const sendMessage = () => {
+            const message = document.getElementById("message");
+
+            // Does nothing if no message was inputted
+            if (message.value == "") return;
+
+            // Emits message and clears it
+            socketio.emit("message", { data: message.value });
+            message.value = "";
+        };
+    </script>
+
+    <!-- Constantly renders all messages that have been sent so that they don't disappear if room.html is refreshed -->
+    {% for msg in messages %}
+        <script>
+            createMessage("{{ msg.name }}", "{{ msg.message }}");
+        </script>
+    {% endfor %}
+{% endblock %}

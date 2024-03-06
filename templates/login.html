@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+    <form class="logentries" action="/login" method="post">
+        <h5>Login!
+        </h5>
+        <div>
+            <input autocomplete="off" autofocus name="username" placeholder="Username" type="text" value="{{ username }}">
+        </div>
+        <div>
+            <input name="password" placeholder="Password" type="password">
+        </div>
+        <button id="btn" class="btn btn-primary" type="submit">Log In</button>
+    </form>
+    {% if error %}
+        <div class="alert alert-danger" id="logregalert" role="alert">{{ error }}</div>
+    {% endif %}
+{% endblock %}
